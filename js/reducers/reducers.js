@@ -10,7 +10,12 @@
  *   });
  */
 
-import { CHANGE_FORM, SET_AUTH, SENDING_REQUEST } from '../constants/AppConstants';
+import {
+  CHANGE_FORM,
+  SET_AUTH,
+  SENDING_REQUEST,
+  ADD_BOOKMARK,
+  REMOVE_BOOKMARK } from '../constants/AppConstants';
 // Object.assign is not yet fully supported in all browsers, so we fallback to
 // a polyfill
 const assign = Object.assign || require('object.assign');
@@ -23,7 +28,20 @@ const initialState = {
     password: ''
   },
   currentlySending: false,
-  loggedIn: auth.loggedIn()
+  loggedIn: auth.loggedIn(),
+  bookmarks: [{
+    bookmark: {
+      url: '',
+      name: '',
+      folder: 0
+    }
+  }],
+  folders: [{
+    folder: {
+      name: '',
+      id: 0
+    }
+  }]
 };
 
 // Takes care of changing the application state
@@ -42,6 +60,33 @@ export function homeReducer(state = initialState, action) {
     case SENDING_REQUEST:
       return assign({}, state, {
         currentlySending: action.sending
+      });
+      break;
+    default:
+      return state;
+  }
+}
+
+export function bookmarkReducer(state = initialState, action) {
+  switch (action.type) {
+    case ADD_BOOKMARK:
+      return assign({}, state, {
+        bookmarks: action.newState
+      });
+      break;
+    case REMOVE_BOOKMARK:
+      return assign({}, state, {
+        bookmarks: action.newState
+      });
+      break;
+    case ADD_FOLDER:
+      return assign({}, state, {
+        folders: action.newState
+      });
+      break;
+    case REMOVE_FOLDER:
+      return assign({}, state, {
+        folders: action.newState
       });
       break;
     default:
